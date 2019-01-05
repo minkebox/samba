@@ -1,6 +1,5 @@
 #! /bin/sh
 
-/usr/sbin/avahi-daemon --no-drop-root -D
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
 
