@@ -9,8 +9,8 @@ CONF=/etc/samba/shareable.conf
 while true; do
   echo > ${CONF}
   for name in /shareable/* ; do
-    if [ -d $name ]; then
-      echo "[$(basename ${name})]" >> ${CONF}
+    if [ -d "$name" ]; then
+      echo "[$(basename "${name}")]" >> ${CONF}
       echo "  path=${name}" >> ${CONF}
       echo "  public = yes" >> ${CONF}
       echo "  writable = yes" >> ${CONF}
