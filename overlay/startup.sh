@@ -5,24 +5,7 @@
 
 trap "echo 'Terminating'; killall inotifywait sleep smbd nmbd; exit" TERM
 
-SIZESLEEP=3600 # 1 hour
-STATUSSPACE=/etc/status/space.info
 CONF=/etc/samba/shareable.conf
-
-dsize() {
-  df /shareable/ > ${STATUSSPACE}.new
-  (cd /shareable/; du -d0 *) >> ${STATUSSPACE}.new
-  cat ${STATUSSPACE}.new > ${STATUSSPACE}
-}
-
-dloop() {
-  while true; do
-    dsize
-    sleep ${SIZESLEEP}
-  done
-}
-
-dloop &
 
 mkconf() {
   while true; do
@@ -39,7 +22,6 @@ mkconf() {
       fi
     done
     killall -HUP smbd
-    (sleep 10; dsize) &
     read event
   done
 }
