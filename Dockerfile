@@ -1,8 +1,8 @@
 FROM alpine:edge
 
-RUN apk --no-cache add samba-server inotify-tools
+RUN apk --no-cache add samba-server
 
-COPY overlay/ /
+COPY root/ /
 
 EXPOSE 137/udp 138/udp 139/tcp 445/tcp
 
