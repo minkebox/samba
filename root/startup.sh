@@ -19,5 +19,5 @@ done
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
 
-sleep 2147483647d ^
+sleep 2147483647d &
 wait "$!"
