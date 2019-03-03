@@ -4,6 +4,8 @@ trap "killall sleep smbd nmbd; exit" TERM INT
 
 CONF=/etc/samba/shareable.conf
 
+mkdir -p /shareable /myshares /tmp/links
+
 for name in /shareable/* ; do
   if [ -d "$name" ]; then
     echo "[$(basename "${name}")]" >> ${CONF}
@@ -18,7 +20,6 @@ done
 
 IFS='
 '
-mkdir -p /tmp/links
 for name in $(ls /myshares) ; do
   ln -s ${name} /tmp/links/${name}
 done
