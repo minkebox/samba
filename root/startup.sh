@@ -16,6 +16,19 @@ for name in /shareable/* ; do
   fi
 done
 
+IFS='
+'
+for name in $(cat /etc/extra-shares) ; do
+  mkdir -p /myshares/${name}
+  echo "[${name}]" >> ${CONF}
+  echo "  path=/myshares/${name}" >> ${CONF}
+  echo "  public = yes" >> ${CONF}
+  echo "  writable = yes" >> ${CONF}
+  echo "  printable = no" >> ${CONF}
+  echo "  browseable = yes" >> ${CONF}
+  echo "  guest ok = yes" >> ${CONF}
+done
+
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
 
