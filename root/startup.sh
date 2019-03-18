@@ -3,18 +3,33 @@
 trap "killall sleep smbd nmbd; exit" TERM INT
 
 CONF=/etc/samba/shareable.conf
+GUEST=yes
+
+if [ "${SAMBA_USERNAME}" != "" ]; then
+  GUEST=no
+  adduser -D -s /bin/nologin ${SAMBA_USERNAME}
+  if [ "${SAMBA_PASSWORD}" = "" ]; then
+    passwd -u ${SAMBA_USERNAME}
+    smbpasswd -s -a ${SAMBA_USERNAME}
+    smbpasswd -n ${SAMBA_USERNAME}
+  else
+    echo ${SAMBA_USERNAME}:${SAMBA_PASSWORD} | chpasswd > /dev/null
+    (echo ${SAMBA_USERNAME} ; echo ${SAMBA_USERNAME}) | smbpasswd -s -a ${SAMBA_USERNAME}
+  fi
+  smbpasswd -e ${SAMBA_USERNAME}
+fi
 
 mkdir -p /shareable
 
 for name in /shareable/* ; do
   if [ -d "$name" ]; then
-    echo "[$(basename "${name}")]" >> ${CONF}
-    echo "  path=${name}" >> ${CONF}
-    echo "  public = yes" >> ${CONF}
-    echo "  writable = yes" >> ${CONF}
-    echo "  printable = no" >> ${CONF}
-    echo "  browseable = yes" >> ${CONF}
-    echo "  guest ok = yes" >> ${CONF}
+    echo "[$(basename "${name}")]
+  path=${name}
+  public = yes
+  writable = yes
+  printable = no
+  browseable = yes
+  guest ok = ${GUEST}" >> ${CONF}
   fi
 done
 
