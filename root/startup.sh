@@ -1,4 +1,4 @@
-#! /bin/sh -x
+#! /bin/sh
 
 trap "killall sleep smbd nmbd; exit" TERM INT
 
