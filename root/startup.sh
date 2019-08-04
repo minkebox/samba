@@ -32,9 +32,11 @@ for name in /shareable/* ; do
   fi
 done
 
+SMB_GROUP=$(grep -i '^\s*workgroup\s*=' /etc/samba/smb.conf | cut -f2 -d= | tr -d '[:blank:]')
+
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
-/wsdd.py &
+/wsdd.py -i ${__HOME_INTERFACE} -4 -w ${SMB_GROUP} &
 
 sleep 2147483647d &
 wait "$!"
