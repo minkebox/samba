@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add samba-server samba-common-tools
+RUN apk add samba-server samba-common-tools python3
 
 COPY root/ /
 

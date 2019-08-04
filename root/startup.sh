@@ -34,6 +34,7 @@ done
 
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
+/wsdd.py &
 
 sleep 2147483647d &
 wait "$!"
