@@ -2,7 +2,8 @@
 
 trap "killall sleep smbd nmbd; exit" TERM INT
 
-CONF=/etc/samba/shareable.conf
+SMB_CONF=/etc/samba/smb.conf
+SHARES_CONF=/etc/samba/shareable.conf
 GUEST=yes
 
 if [ "${SAMBA_USERNAME}" != "" ]; then
@@ -28,15 +29,13 @@ for name in /shareable/* ; do
   writable = yes
   printable = no
   browseable = yes
-  guest ok = ${GUEST}" >> ${CONF}
+  guest ok = ${GUEST}" >> ${SHARES_CONF}
   fi
 done
 
-SMB_GROUP=$(grep -i '^\s*workgroup\s*=' /etc/samba/smb.conf | cut -f2 -d= | tr -d '[:blank:]')
-
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
-/wsdd.py -i ${__HOME_INTERFACE} -4 -w ${SMB_GROUP} &
+/wsdd.py -i ${__HOME_INTERFACE} -4 -w $(grep -i '^\s*workgroup\s*=' ${SMB_CONF} | cut -f2 -d= | tr -d '[:blank:]') &
 
 sleep 2147483647d &
 wait "$!"
