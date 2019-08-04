@@ -3,6 +3,7 @@
 trap "killall sleep smbd nmbd; exit" TERM INT
 
 SMB_CONF=/etc/samba/smb.conf
+WORKGROUP_CONF=/etc/samba/workgroup.conf
 SHARES_CONF=/etc/samba/shareable.conf
 GUEST=yes
 
@@ -20,6 +21,10 @@ if [ "${SAMBA_USERNAME}" != "" ]; then
   smbpasswd -e ${SAMBA_USERNAME}
 fi
 
+if [ "${SAMBA_WORKGROUP}" != "" ]; then
+  echo "workgroup = ${SAMBA_WORKGROUP}" > ${WORKGROUP_CONF}
+fi
+
 mkdir -p /shareable
 
 for name in /shareable/* ; do
@@ -35,7 +40,7 @@ done
 
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
-/wsdd.py -i ${__HOME_INTERFACE} -4 -w $(grep -i '^\s*workgroup\s*=' ${SMB_CONF} | cut -f2 -d= | tr -d '[:blank:]') &
+/wsdd.py -i ${__HOME_INTERFACE} -4 -w $(grep -i '^\s*workgroup\s*=' ${WORKGROUP_CONF} | cut -f2 -d= | tr -d '[:blank:]') &
 
 sleep 2147483647d &
 wait "$!"
