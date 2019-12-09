@@ -7,14 +7,11 @@ services:
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  - export DOCKER_BUILDKIT=1
-  - export DOCKER_CLI_EXPERIMENTAL=enabled
 
 build-master:
   stage: build
   script:
-    - docker buildx build --help
-    - docker buildx build --platform=linux/amd64,linux/arm64 --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
   only:
     - master
