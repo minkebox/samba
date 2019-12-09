@@ -13,7 +13,8 @@ before_script:
 build-master:
   stage: build
   script:
-    - docker buildx build --platform linux/amd64,linux/arm64 --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker buildx build --help
+    - docker buildx build --platform=linux/amd64,linux/arm64 --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
   only:
     - master
