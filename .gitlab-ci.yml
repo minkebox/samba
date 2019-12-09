@@ -1,16 +1,7 @@
-variables:
-  DOCKER_HOST: tcp://docker:2375/
+include:
+  - project: 'ericvh/gitlab-ci-arm-template'
+    file: '/.gitlab-ci.yml'
 
-build:
-  image: jonoh/docker-buildx-qemu
-  stage: build
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    # Use docker-container driver to allow useful features (push/multi-platform)
-    - docker buildx create --driver docker-container --use
-    - docker buildx inspect --bootstrap    
-  script:
-    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
-    - docker buildx build --platform local,linux/arm64 --pull -t "$CI_REGISTRY_IMAGE" --push .
+variables:
+  CI_BUILDX_ARCHS: "linux/arm64,linux/amd64"
+  
