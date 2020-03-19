@@ -2,6 +2,7 @@
 
 trap "killall sleep smbd nmbd; exit" TERM INT
 
+IFACE=eth0
 SMB_CONF=/etc/samba/smb.conf
 WORKGROUP_CONF=/etc/samba/workgroup.conf
 SHARES_CONF=/etc/samba/shareable.conf
@@ -40,7 +41,7 @@ done
 
 /usr/sbin/nmbd -D
 /usr/sbin/smbd -D
-/wsdd.py -i ${__HOME_INTERFACE} -4 -w $(grep -i '^\s*workgroup\s*=' ${WORKGROUP_CONF} | cut -f2 -d= | tr -d '[:blank:]') &
+/wsdd.py -i ${IFACE} -4 -w $(grep -i '^\s*workgroup\s*=' ${WORKGROUP_CONF} | cut -f2 -d= | tr -d '[:blank:]') &
 
 sleep 2147483647d &
 wait "$!"
