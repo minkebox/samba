@@ -158,7 +158,7 @@
       var series = [];
 
       for (var i = 0; i < lines.length && lines[i]; i++) {
-        const p = lines[i].split(/\\t+/);
+        var p = lines[i].split(/\\t+/);
         labels.push(p[1]);
         series.push(parseInt(p[0]) / 1000000);
       }
